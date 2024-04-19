@@ -2,7 +2,7 @@ import re
 from urllib.request import urlopen
 import dramatiq
 from dramatiq.brokers.redis import RedisBroker
-from molten import App, QueryParam, Route
+from molten import App, QueryParam, Route, Response, HTTP_302
 import dramatiq_dashboard
 import os
 from dotenv import load_dotenv
@@ -31,16 +31,17 @@ def crawl(uri):
             crawl.send(match_uri)
             broker.client.sadd("crawl_seen", match_uri)
 
-
-def start(uri: QueryParam):
-    if not uri.startswith("http"):
-        uri = f"http://{uri}"
-
     crawl.send(uri)
     return "Message sent!"
 
 
-app = App(routes=[Route("/crawl", start)])
+def redirect_to_drama():
+    return Response(status=HTTP_302, headers={"Location": "/drama/"})
+
+
+app = App(routes=[
+    Route("/", redirect_to_drama, method="GET")
+])
 
 dashboard_middleware = dramatiq_dashboard.make_wsgi_middleware("/drama")
 app = dashboard_middleware(app)
