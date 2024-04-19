@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dramadashboard"
+version = "0.1.0"
+description = ""
+authors = ["BuddhiD <buddhid.jaya@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+dramatiq = "^1.16.0"
+redis = "^5.0.3"
+gunicorn = "^22.0.0"
+jinja2 = "3.0.3"
+molten = "^1.0.2"
+markupsafe = "2.0.1"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+poetry-plugin-export = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

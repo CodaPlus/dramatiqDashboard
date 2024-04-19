@@ -1,17 +1,20 @@
 import re
 from urllib.request import urlopen
-
 import dramatiq
 from dramatiq.brokers.redis import RedisBroker
 from molten import App, QueryParam, Route
-
 import dramatiq_dashboard
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-broker = RedisBroker()
+
+REDIS_URL = "redis://{host}:{port}/0".format(host=os.environ.get('DRAMATIQ_REDIS_HOST', default="localhost"), port=os.environ.get('DRAMATIQ_REDIS_PORT', default=6379))
+broker = RedisBroker(url=REDIS_URL)
 dramatiq.set_broker(broker)
 
-HREF_RE = re.compile('href="(https?://[^"]+)"')
 
+HREF_RE = re.compile('href="(https?://[^"]+)"')
 
 @dramatiq.actor(max_retries=1)
 def crawl(uri):

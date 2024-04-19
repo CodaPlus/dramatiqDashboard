@@ -9,3 +9,6 @@
 /dist
 /htmlcov
 __pycache__
+.venv
+.env
+.github
